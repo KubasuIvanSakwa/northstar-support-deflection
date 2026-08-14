@@ -1,13 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>northstar-support-deflection</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Northstar-support-deflection</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-    <p>
-        Hello World
-    </p>
+
+  <!--Northstar header-->
+  <header class="ns-header">
+    <div class="ns-header-inner">
+      <div class="ns-brand">
+        <div class="ns-mark">
+          <svg viewBox="0 0 24 24" fill="none">
+            <path d="M12 2 L14.2 9.8 L22 12 L14.2 14.2 L12 22 L9.8 14.2 L2 12 L9.8 9.8 Z" fill="#0B1220" />
+          </svg>
+        </div>
+        <span class="ns-wordmark">Northstar</span>
+      </div>
+      <div class="ns-status">
+        <span class="ns-status-dot"></span>
+        <span>Assistant online</span>
+      </div>
+    </div>
+  </header>
+
+  <!--Assistant panel-->
+  <main>
+    <section class="panel" aria-label="Support assistant">
+
+      <div class="panel-intro">
+        <h1>Hi, how can we help?</h1>
+        <p>Choose what you need, and the assistant will take it from there.</p>
+      </div>
+
+      <div class="ticket-grid" id="ticketGrid">
+        <!-- Order status -->
+        <button class="ticket-btn" type="button" data-id="order_status" data-label="Order status" onclick="selectTicket(this)">
+          <div class="ticket-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
+          <div class="ticket-label">Order status</div>
+          <div class="ticket-desc">Track a recent order or check delivery timing</div>
+          <div class="ticket-cta">
+            <span class="cta-text">Start</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </button>
+
+        <!-- Returns and refunds -->
+        <button class="ticket-btn" type="button" data-id="returns_refunds" data-label="Returns and refunds" onclick="selectTicket(this)">
+          <div class="ticket-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="1 4 1 10 7 10"/>
+              <path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/>
+            </svg>
+          </div>
+          <div class="ticket-label">Returns and refunds</div>
+          <div class="ticket-desc">Start a return or check a refund</div>
+          <div class="ticket-cta">
+            <span class="cta-text">Start</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </button>
+
+        <!-- Stock availability -->
+        <button class="ticket-btn" type="button" data-id="stock_availability" data-label="Stock availability" onclick="selectTicket(this)">
+          <div class="ticket-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+              <line x1="7.5" y1="4.21" x2="16.5" y2="9.79"/>
+            </svg>
+          </div>
+          <div class="ticket-label">Stock availability</div>
+          <div class="ticket-desc">See if an item is in stock near you</div>
+          <div class="ticket-cta">
+            <span class="cta-text">Start</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+          </div>
+        </button>
+      </div>
+
+      <!-- Confirmation banner (placeholder for the real conversation flow) -->
+      <div class="confirm-banner" id="confirmBanner"></div>
+
+      <!--Fallback-->
+      <div class="fallback-row">
+        <span class="fallback-text">None of these match what you need?</span>
+        <button class="fallback-btn" type="button" onclick="talkToSupport()">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <circle cx="12" cy="12" r="4"/>
+            <line x1="4.93" y1="4.93" x2="9.17" y2="9.17"/>
+            <line x1="14.83" y1="14.83" x2="19.07" y2="19.07"/>
+            <line x1="14.83" y1="9.17" x2="19.07" y2="4.93"/>
+            <line x1="14.83" y1="9.17" x2="18.36" y2="5.64"/>
+            <line x1="4.93" y1="19.07" x2="9.17" y2="14.83"/>
+          </svg>
+          Talk to support
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <script>
+    // Swap these handlers for real routing / API calls once the backend
+    // flows land. For now they satisfy the DoD: render + selectable state.
+    function selectTicket(btn) {
+      document.querySelectorAll('.ticket-btn').forEach(b => {
+        b.classList.remove('selected');
+        b.querySelector('.cta-text').textContent = 'Start';
+      });
+      btn.classList.add('selected');
+      btn.querySelector('.cta-text').textContent = 'Selected';
+
+      const id = btn.dataset.id;
+      const label = btn.dataset.label;
+
+      const banner = document.getElementById('confirmBanner');
+      banner.innerHTML = 'Starting <strong>' + label + '</strong>… the assistant will pick up from here.';
+      banner.classList.add('show');
+
+      console.log('[AssistantPanel] ticket type selected:', id);
+      // onSelectTicketType(id) — hook up real handler here
+    }
+
+    function talkToSupport() {
+      console.log('[AssistantPanel] fallback: talk to support');
+      // onTalkToSupport() — hook up real handler here
+    }
+  </script>
+
 </body>
 </html>

@@ -88,7 +88,7 @@
         </button>
       </div>
 
-      <!-- Confirmation banner (placeholder for the real conversation flow) -->
+      <!-- Confirmation banner -->
       <div class="confirm-banner" id="confirmBanner"></div>
 
       <!--Fallback-->
@@ -112,9 +112,8 @@
   </main>
 
   <script>
-    // Swap these handlers for real routing / API calls once the backend
-    // flows land. For now they satisfy the DoD: render + selectable state.
     function selectTicket(btn) {
+      // Handle active button state
       document.querySelectorAll('.ticket-btn').forEach(b => {
         b.classList.remove('selected');
         b.querySelector('.cta-text').textContent = 'Start';
@@ -124,18 +123,64 @@
 
       const id = btn.dataset.id;
       const label = btn.dataset.label;
-
       const banner = document.getElementById('confirmBanner');
-      banner.innerHTML = 'Starting <strong>' + label + '</strong>… the assistant will pick up from here.';
       banner.classList.add('show');
 
-      console.log('[AssistantPanel] ticket type selected:', id);
-      // onSelectTicketType(id) — hook up real handler here
+      // Inject order lookup UI if Order Status is clicked
+      if (id === 'order_status') {
+        banner.innerHTML = `
+          <div style="margin-top: 10px; text-align: left;">
+            <p style="margin-bottom: 8px;"><strong>Track your order</strong></p>
+            <input type="text" id="orderIdInput" placeholder="Order ID (e.g., N-1001)" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;">
+            <button type="button" onclick="lookupOrderStatus()" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; border: none; background: #0B1220; color: white; font-family: inherit;">Track</button>
+            <div id="orderResult" style="margin-top: 15px; font-size: 14px; line-height: 1.5;"></div>
+          </div>
+        `;
+      } else {
+        // Default text for other buttons
+        banner.innerHTML = 'Starting <strong>' + label + '</strong>… the assistant will pick up from here.';
+      }
+    }
+
+    // Async lookup function
+    async function lookupOrderStatus() {
+      const orderId = document.getElementById('orderIdInput').value.trim();
+      const resultDiv = document.getElementById('orderResult');
+
+      if (!orderId) {
+        resultDiv.innerHTML = '<span style="color: #d93025;">Please enter an Order ID.</span>';
+        return;
+      }
+
+      resultDiv.innerHTML = '<em>Searching...</em>';
+
+      try {
+        // Fetch from the data folder mapped in your directory
+        const response = await fetch('../data/orders.json');
+        const orders = await response.json();
+
+        // Find the matching order
+        const order = orders.find(o => o.orderId.toUpperCase() === orderId.toUpperCase());
+
+        if (order) {
+          const formattedStatus = order.status.charAt(0).toUpperCase() + order.status.slice(1);
+          resultDiv.innerHTML = `
+            <strong>Status:</strong> ${formattedStatus} <br>
+            <strong>Expected Delivery:</strong> ${order.expectedDelivery} <br>
+            <strong>Tracking:</strong> ${order.tracking ? order.tracking : 'Not available yet'} <br>
+            <strong>Items:</strong> ${order.items.join(', ')}
+          `;
+        } else {
+          resultDiv.innerHTML = '<span style="color: #d93025;">Order not found. Please check your ID and try again.</span>';
+        }
+      } catch (err) {
+        console.error('Error fetching data:', err);
+        resultDiv.innerHTML = '<span style="color: #d93025;">Error: Please make sure you are running a local development server (like Live Server) to fetch the JSON file.</span>';
+      }
     }
 
     function talkToSupport() {
       console.log('[AssistantPanel] fallback: talk to support');
-      // onTalkToSupport() — hook up real handler here
     }
   </script>
 

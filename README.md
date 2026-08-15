@@ -17,11 +17,10 @@ for at least two of the three categories
 ## Team
 | Name | Role |
 |---|---|
-| [Name] | Team Lead |
-| [Name] | Product Owner |
-| [Name] | Frontend Engineer |
-| [Name] | Backend/Data Engineer |
-| [Name] | QA/Documentation Owner |
+| Judy Mwirigi | Team Lead |
+| Kubasu Ivan Sakwa | Product Owner |
+| Rosalind Nduta | Frontend Engineer |
+| shelaw359 | QA/Documentation Owner |
 
 
 ## Key Documents

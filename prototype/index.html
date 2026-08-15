@@ -126,7 +126,7 @@
       const banner = document.getElementById('confirmBanner');
       banner.classList.add('show');
 
-      // Inject order lookup UI if Order Status is clicked
+      // Routing logic for the banner UI
       if (id === 'order_status') {
         banner.innerHTML = `
           <div style="margin-top: 10px; text-align: left;">
@@ -136,13 +136,22 @@
             <div id="orderResult" style="margin-top: 15px; font-size: 14px; line-height: 1.5;"></div>
           </div>
         `;
+      } else if (id === 'stock_availability') {
+        banner.innerHTML = `
+          <div style="margin-top: 10px; text-align: left;">
+            <p style="margin-bottom: 8px;"><strong>Check Stock Availability</strong></p>
+            <input type="text" id="productIdInput" placeholder="Product ID (e.g., P-201)" style="padding: 8px; border: 1px solid #ccc; border-radius: 4px; font-family: inherit;">
+            <button type="button" onclick="lookupStockAvailability()" style="padding: 8px 12px; cursor: pointer; border-radius: 4px; border: none; background: #0B1220; color: white; font-family: inherit;">Check Stock</button>
+            <div id="stockResult" style="margin-top: 15px; font-size: 14px; line-height: 1.5;"></div>
+          </div>
+        `;
       } else {
         // Default text for other buttons
         banner.innerHTML = 'Starting <strong>' + label + '</strong>… the assistant will pick up from here.';
       }
     }
 
-    // Async lookup function
+    // --- Order Status Lookup ---
     async function lookupOrderStatus() {
       const orderId = document.getElementById('orderIdInput').value.trim();
       const resultDiv = document.getElementById('orderResult');
@@ -155,11 +164,9 @@
       resultDiv.innerHTML = '<em>Searching...</em>';
 
       try {
-        // Fetch from the data folder mapped in your directory
         const response = await fetch('../data/orders.json');
         const orders = await response.json();
 
-        // Find the matching order
         const order = orders.find(o => o.orderId.toUpperCase() === orderId.toUpperCase());
 
         if (order) {
@@ -174,11 +181,55 @@
           resultDiv.innerHTML = '<span style="color: #d93025;">Order not found. Please check your ID and try again.</span>';
         }
       } catch (err) {
-        console.error('Error fetching data:', err);
-        resultDiv.innerHTML = '<span style="color: #d93025;">Error: Please make sure you are running a local development server (like Live Server) to fetch the JSON file.</span>';
+        console.error('Error fetching orders:', err);
+        resultDiv.innerHTML = '<span style="color: #d93025;">Error: Could not retrieve orders. Please ensure you are running a local server.</span>';
       }
     }
 
+    // --- Stock Availability Lookup ---
+    async function lookupStockAvailability() {
+      const productId = document.getElementById('productIdInput').value.trim();
+      const resultDiv = document.getElementById('stockResult');
+
+      if (!productId) {
+        resultDiv.innerHTML = '<span style="color: #d93025;">Please enter a Product ID.</span>';
+        return;
+      }
+
+      resultDiv.innerHTML = '<em>Checking inventory...</em>';
+
+      try {
+        const response = await fetch('../data/inventory.json');
+        const inventory = await response.json();
+
+        // Find all variations of this product ID (e.g., different sizes)
+        const matchedItems = inventory.filter(p => p.productId.toUpperCase() === productId.toUpperCase());
+
+        if (matchedItems.length > 0) {
+          // Get the base product name from the first match
+          let htmlOutput = `<strong>Product:</strong> ${matchedItems[0].productName}<br>`;
+          htmlOutput += `<ul style="list-style-type: none; padding-left: 0; margin-top: 8px;">`;
+
+          matchedItems.forEach(item => {
+            const stockStatus = item.stock > 0 
+              ? `<span style="color: #188038; font-weight: 500;">In Stock (${item.stock} available)</span>` 
+              : `<span style="color: #d93025; font-weight: 500;">Out of Stock</span>`;
+            
+            htmlOutput += `<li style="margin-bottom: 4px;">Size: ${item.size} — ${stockStatus}</li>`;
+          });
+
+          htmlOutput += `</ul>`;
+          resultDiv.innerHTML = htmlOutput;
+        } else {
+          resultDiv.innerHTML = '<span style="color: #d93025;">Product not found. Please check your Product ID and try again.</span>';
+        }
+      } catch (err) {
+        console.error('Error fetching inventory:', err);
+        resultDiv.innerHTML = '<span style="color: #d93025;">Error: Could not retrieve inventory. Please ensure you are running a local server.</span>';
+      }
+    }
+
+    // --- Fallback Support ---
     function talkToSupport() {
       console.log('[AssistantPanel] fallback: talk to support');
     }

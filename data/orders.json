@@ -1,1 +1,50 @@
-
+[
+  {
+    "orderId": "N-1001",
+    "email": "customer1@example.com",
+    "status": "shipped",
+    "tracking": "TRK-9001",
+    "expectedDelivery": "2026-08-20",
+    "items": ["Wireless Headphones"]
+  },
+  {
+    "orderId": "N-1002",
+    "email": "customer2@example.com",
+    "status": "processing",
+    "tracking": null,
+    "expectedDelivery": "2026-08-23",
+    "items": ["Trail Running Shoes (Size 9)"]
+  },
+  {
+    "orderId": "N-1003",
+    "email": "customer3@example.com",
+    "status": "delivered",
+    "tracking": "TRK-9003",
+    "expectedDelivery": "2026-08-10",
+    "items": ["Ceramic Mug Set"]
+  },
+  {
+    "orderId": "N-1004",
+    "email": "customer4@example.com",
+    "status": "delayed",
+    "tracking": "TRK-9004",
+    "expectedDelivery": "2026-08-25",
+    "items": ["Desk Lamp"]
+  },
+  {
+    "orderId": "N-1005",
+    "email": "customer5@example.com",
+    "status": "out for delivery",
+    "tracking": "TRK-9005",
+    "expectedDelivery": "2026-08-14",
+    "items": ["Backpack"]
+  },
+  {
+    "orderId": "N-1006",
+    "email": "customer6@example.com",
+    "status": "shipped",
+    "tracking": "TRK-9006",
+    "expectedDelivery": "2026-08-19",
+    "items": ["Bluetooth Speaker"]
+  }
+]

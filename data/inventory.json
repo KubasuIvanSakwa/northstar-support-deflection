@@ -1,0 +1,7 @@
+[
+  { "productId": "P-201", "productName": "Trail Running Shoes", "size": "9", "stock": 0 },
+  { "productId": "P-201", "productName": "Trail Running Shoes", "size": "10", "stock": 4 },
+  { "productId": "P-202", "productName": "Wireless Headphones", "size": "One Size", "stock": 12 },
+  { "productId": "P-203", "productName": "Backpack", "size": "One Size", "stock": 2 },
+  { "productId": "P-204", "productName": "Desk Lamp", "size": "One Size", "stock": 0 }
+]

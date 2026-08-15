@@ -20,7 +20,8 @@ for at least two of the three categories
 | Judy Mwirigi | Team Lead |
 | Kubasu Ivan Sakwa | Product Owner |
 | Rosalind Nduta | Frontend Engineer |
-| shelaw359 | QA/Documentation Owner |
+| shelaw359 | QA |
+| Ammi Mmosi | Documentation Owner |
 
 
 ## Key Documents
